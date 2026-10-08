@@ -42,7 +42,7 @@ jobs:
 
     - name: check that all changes in this pr was made in the src/pr_author directory except for users "aduuna", "oliverangelil", and "cyrille-feu"
       run: |
-        if [ "$PR_AUTHOR" = "oliverangelil" ] || [ "$PR_AUTHOR" = "aduuna" ] || [ "$PR_AUTHOR" = "cyrille-feu" ]; then
+        if [ "$PR_AUTHOR" = "oliverangelil" ] || [ "$PR_AUTHOR" = "aduuna" ] || [ "$PR_AUTHOR" = "cyrille-feu" ] || [ "$PR_AUTHOR" = "shaddydevops" ]; then
           echo "User $PR_AUTHOR is exempt from directory check."
           exit 0
         fi;

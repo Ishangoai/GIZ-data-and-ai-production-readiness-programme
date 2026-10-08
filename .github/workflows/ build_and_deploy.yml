@@ -59,7 +59,7 @@ env:
   GAR_LOCATION: 'europe-west2'
   CLOUD_RUN_REGION: 'europe-west2'
   REPOSITORY: '${{ secrets.GCP_PROJECT_NAME }}-gcr'
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github'
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github-actions-provider'
   DEPLOY_EXAMPLE: 'true' # <--- Toggle this to 'true' to deploy the example folder
 
 jobs:
@@ -131,7 +131,7 @@ jobs:
       # Build the Docker image
       - name: 'Build Docker container'
         run: |-
-          if [ "${{ env.DEPLOY_EXAMPLE }}" = "true" ] && { [ "$PR_AUTHOR" = "oliverangelil" ] || [ "$PR_AUTHOR" = "aduuna" ] || [ "$PR_AUTHOR" = "cyrille-feu" ]; }; then
+          if [ "${{ env.DEPLOY_EXAMPLE }}" = "true" ] && { [ "$PR_AUTHOR" = "oliverangelil" ] || [ "$PR_AUTHOR" = "aduuna" ] || [ "$PR_AUTHOR" = "cyrille-feu" ] || [ "$PR_AUTHOR" = "shaddydevops" ]; }; then
             DEPLOYMENT_TARGET="ROOT"
             echo "CLOUD_RUN_SERVICE=${{ secrets.GCP_PROJECT_NAME }}-service" >> $GITHUB_ENV
             echo "IMAGE=${{ secrets.GCP_PROJECT_NAME }}-image" >> $GITHUB_ENV
@@ -173,10 +173,11 @@ jobs:
             --region ${{ env.CLOUD_RUN_REGION }} \
             --platform managed \
             --allow-unauthenticated \
+            --update-labels cohort=giz-2026 \
             --set-env-vars GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} \
             --set-env-vars GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }} \
             --set-env-vars GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }} \
-            --set-env-vars SLACK_API_TOKEN=${{ secrets.SLACK_API_TOKEN }} \
+            --set-env-vars SLACK_API_TOKEN=${{ secrets.SLACK_AIMS_COURSE_BOT_TOKEN }} \
             --set-env-vars GITHUB_USER=${{ env.PR_AUTHOR }} \
             --set-env-vars DEPLOYMENT_TARGET=${{ env.DEPLOYMENT_TARGET }} \
             --project ${{ env.PROJECT_ID }}

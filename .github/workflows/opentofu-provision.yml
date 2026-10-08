@@ -40,7 +40,7 @@ jobs:
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github
+          workload_identity_provider: projects/${{ secrets.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/github/providers/github-actions-provider
           service_account: tf-provision@${{ secrets.GCP_PROJECT_NAME }}.iam.gserviceaccount.com
 
       - name: Provision OpenTofu
